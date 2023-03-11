@@ -1,0 +1,35 @@
+{
+  "name": "slackqsbot",
+  "version": "1.0.0",
+  "description": "A simple slack app",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Darth-Par/slackQSBot.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Darth-Par/slackQSBot/issues"
+  },
+  "homepage": "https://github.com/Darth-Par/slackQSBot#readme",
+  "devDependencies": {
+    "@types/jest": "^29.4.0",
+    "@types/node": "18.11.15",
+    "@typescript-eslint/eslint-plugin": "^5.52.0",
+    "@typescript-eslint/parser": "^5.52.0",
+    "eslint": "^8.34.0",
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "jest": "^29.4.3",
+    "ts-jest": "^29.0.3",
+    "ts-node": "^10.9.1"
+  }
+}
