@@ -1,5 +1,5 @@
-// import nodeFetch from 'node-fetch';
 import axios from 'axios';
+import actionsCore = require('@actions/core');
 
 type SlackMessageBody = {
   text: string;
@@ -14,8 +14,8 @@ type SlackErrorResponse = {
 
 const slackUrl =
   'https://hooks.slack.com/services/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';
-
-const data: SlackMessageBody = { text: 'Hello from GitHub' };
+const inputMessage = actionsCore.getInput('message');
+const data: SlackMessageBody = { text: inputMessage };
 
 const sendToSlack = async (url: string, messageBody: SlackMessageBody) => {
   try {
@@ -33,6 +33,5 @@ const sendToSlack = async (url: string, messageBody: SlackMessageBody) => {
 };
 
 (async () => {
-  const slackResponse = await sendToSlack(slackUrl, data);
-  console.log(slackResponse);
+  await sendToSlack(slackUrl, data);
 })();
