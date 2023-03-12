@@ -12,8 +12,7 @@ type SlackErrorResponse = {
   };
 };
 
-const slackUrl =
-  'https://hooks.slack.com/services/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';
+const slackUrl = actionsCore.getInput('slackWebHook');
 const inputMessage = actionsCore.getInput('message');
 const data: SlackMessageBody = { text: inputMessage };
 
