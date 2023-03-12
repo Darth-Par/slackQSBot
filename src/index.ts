@@ -1,5 +1,5 @@
 import axios from 'axios';
-import actionsCore = require('@actions/core');
+import * as actionsCore from '@actions/core';
 
 type SlackMessageBody = {
   text: string;
@@ -15,9 +15,11 @@ const sendToSlack = async (url: string, messageBody: SlackMessageBody) => {
       headers: { 'Content-Type': 'application/json' },
     });
     actionsCore.setOutput('response', JSON.stringify(response));
+    return 0;
   } catch (error) {
     const slackError = JSON.stringify(error);
     actionsCore.setFailed(slackError);
+    return 1;
   }
 };
 
