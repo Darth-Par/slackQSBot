@@ -5,7 +5,7 @@ inputs:
     description: 'Slack webhook'
     required: true
   message:
-    description: 'Message to send',
+    description: 'Message to send'
     required: true
     default: 'Hello from GitHub Actions'
 outputs:
