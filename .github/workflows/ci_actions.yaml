@@ -11,7 +11,7 @@ jobs:
           node-version: '18.x'
           cache: 'npm'
       - run: npm ci
-      - run: npx eslint -c .eslint.js .
+      - run: npx eslint -c .eslintrc.js .
   build:
     runs-on: ubuntu-latest
     steps:
