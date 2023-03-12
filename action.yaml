@@ -12,7 +12,7 @@ outputs:
   response:
     description: 'Response from slack'
 runs:
-  using: 'node18'
+  using: 'node16'
   main: 'build/index.js'
 branding:
   icon: 'code'
