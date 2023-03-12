@@ -13,15 +13,16 @@ const inputMessage = core.getInput('message');
 const getCommitData = async () => {
   if (github.context.eventName == 'push') {
     const pushPayload = github.context.payload as PushEvent;
+    const repositoryName = pushPayload.repository.name;
     const commitId = pushPayload.head_commit?.id;
     const commitUrl = pushPayload.head_commit?.url;
 
     return {
+      name: repositoryName,
       id: commitId,
       url: commitUrl,
     };
   }
-
   return undefined;
 };
 
@@ -42,7 +43,8 @@ const sendToSlack = async (url: string, messageBody: SlackMessageBody) => {
 (async () => {
   const commitData = await getCommitData();
   if (commitData) {
-    const messageBody = `Status: ${inputMessage}\nCommitId: ${commitData.id}\nCommitUrl: ${commitData.url}`;
+    const messageBody = `RepositoryName: ${commitData.name}\nStatus: ${inputMessage}\nCommitId: ${commitData.id}\nCommitUrl: ${commitData.url}`;
     await sendToSlack(slackUrl, { text: messageBody });
   }
+  core.setFailed('Unable to get github data');
 })();
