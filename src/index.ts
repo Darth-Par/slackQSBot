@@ -1,33 +1,38 @@
 // import nodeFetch from 'node-fetch';
-import https = require('https');
+import axios from 'axios';
 
-const data = JSON.stringify({ text: 'Hello from GitHub' });
-const options = {
-  hostname: 'hooks.slack.com',
-  port: '443',
-  path: '/services/TE5Q5HXUZ/B04TEH0V5V3/GaxPd2DtQUrmQ8tduK48FpQO',
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-  },
+type SlackMessageBody = {
+  text: string;
 };
 
-const req = https.request(options, (res) => {
-  console.log(`STATUS: ${res.statusCode}`);
-  console.log(`MESSAGE: ${res.statusMessage}`);
-  console.log(`HEADERS: ${JSON.stringify(res.headers)}`);
-  res.setEncoding('utf8');
-  res.on('data', (chunk) => {
-    console.log(`BODY: ${chunk}`);
-  });
-  res.on('end', () => {
-    console.log('No more data in response.');
-  });
-});
+type SlackErrorResponse = {
+  response: {
+    status: number;
+    statusText: string;
+  };
+};
 
-req.on('error', (error) => {
-  console.error(error);
-});
+const slackUrl =
+  'https://hooks.slack.com/services/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';
 
-req.write(data);
-req.end();
+const data: SlackMessageBody = { text: 'Hello from GitHub' };
+
+const sendToSlack = async (url: string, messageBody: SlackMessageBody) => {
+  try {
+    const response = await axios.post(url, JSON.stringify(messageBody), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+    return { statusCode: response.status, statusMessage: response.statusText };
+  } catch (error) {
+    const slackError = error as SlackErrorResponse;
+    return {
+      statusCode: slackError.response.status,
+      statusMessage: slackError.response.statusText,
+    };
+  }
+};
+
+(async () => {
+  const slackResponse = await sendToSlack(slackUrl, data);
+  console.log(slackResponse);
+})();
