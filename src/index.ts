@@ -45,6 +45,7 @@ const sendToSlack = async (url: string, messageBody: SlackMessageBody) => {
   if (commitData) {
     const messageBody = `RepositoryName: ${commitData.name}\nStatus: ${inputMessage}\nCommitId: ${commitData.id}\nCommitUrl: ${commitData.url}`;
     await sendToSlack(slackUrl, { text: messageBody });
+  } else {
+    core.setFailed('Unable to get github data');
   }
-  core.setFailed('Unable to get github data');
 })();
