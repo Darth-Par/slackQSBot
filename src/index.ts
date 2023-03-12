@@ -5,12 +5,12 @@ type SlackMessageBody = {
   text: string;
 };
 
-type SlackErrorResponse = {
-  response: {
-    status: number;
-    statusText: string;
-  };
-};
+// type SlackErrorResponse = {
+//   response: {
+//     status: number;
+//     statusText: string;
+//   };
+// };
 
 const slackUrl = actionsCore.getInput('slackWebHook');
 const inputMessage = actionsCore.getInput('message');
@@ -24,11 +24,12 @@ const sendToSlack = async (url: string, messageBody: SlackMessageBody) => {
     actionsCore.setOutput('response', JSON.stringify(response));
     return { statusCode: response.status, statusMessage: response.statusText };
   } catch (error) {
-    const slackError = error as SlackErrorResponse;
-    actionsCore.setOutput('response', JSON.stringify(slackError));
+    const slackError = JSON.stringify(error);
+    actionsCore.setOutput('response', slackError);
+    actionsCore.setFailed(slackError);
     return {
-      statusCode: slackError.response.status,
-      statusMessage: slackError.response.statusText,
+      statusCode: 500,
+      statusMessage: slackError,
     };
   }
 };
