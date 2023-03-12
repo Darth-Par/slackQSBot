@@ -4,6 +4,7 @@
   "description": "A simple slack app",
   "main": "index.js",
   "scripts": {
+    "vwBuild": "ncc build ./src/index.ts -w",
     "vBuild": "ncc build ./src/index.ts",
     "tsBuild": "tsc",
     "tsWatch": "tsc -w",
@@ -36,6 +37,7 @@
   },
   "dependencies": {
     "@actions/core": "^1.10.0",
+    "@actions/github": "^5.1.1",
     "axios": "^1.3.4",
     "node": "^19.6.1"
   }
