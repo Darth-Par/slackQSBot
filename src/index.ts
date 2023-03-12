@@ -25,7 +25,6 @@ const sendToSlack = async (url: string, messageBody: SlackMessageBody) => {
     return { statusCode: response.status, statusMessage: response.statusText };
   } catch (error) {
     const slackError = JSON.stringify(error);
-    actionsCore.setOutput('response', slackError);
     actionsCore.setFailed(slackError);
     return {
       statusCode: 500,
