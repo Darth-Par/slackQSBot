@@ -32,8 +32,6 @@ const sendToSlack = async (url: string, messageBody: SlackMessageBody) => {
       headers: { 'Content-Type': 'application/json' },
     });
     core.setOutput('response', JSON.stringify(response.statusText));
-    const payload = JSON.stringify(github.context.payload, undefined, 2);
-    console.log(`Payload: ${payload}`);
   } catch (error) {
     const slackError = JSON.stringify(error);
     core.setFailed(slackError);
