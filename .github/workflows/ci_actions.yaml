@@ -21,4 +21,5 @@ jobs:
           node-version: '18.x'
           cache: 'npm'
       - run: npm install -g typescript
+      - run: npm install -g @vercel/ncc
       - run: npm run vBuild
