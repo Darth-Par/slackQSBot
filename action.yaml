@@ -1,15 +1,18 @@
 name: 'Slack Sender'
 description: 'Send messages to slack webhooks'
 inputs:
+  slackWebHook:
+    description: 'Slack webhook'
+    required: true
   message:
-    description: 'Message to send',
+    description: 'Message to send'
     required: true
     default: 'Hello from GitHub Actions'
 outputs:
   response:
     description: 'Response from slack'
 runs:
-  using: 'node18'
+  using: 'node16'
   main: 'build/index.js'
 branding:
   icon: 'code'
