@@ -4,8 +4,9 @@
   "description": "A simple slack app",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
-    "watch": "tsc -w",
+    "vBuild": "ncc build ./src/index.ts",
+    "tsBuild": "tsc",
+    "tsWatch": "tsc -w",
     "test": "jest"
   },
   "repository": {
