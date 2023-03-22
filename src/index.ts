@@ -43,7 +43,7 @@ const slackGeneralConfig: SlackConfig = {
     Authorization: `Bearer ${slackToken}`,
   },
 };
-
+console.log(baseUrl);
 const getCommitData = async (): Promise<CommitData | undefined> => {
   if (github.context.eventName == 'push') {
     const pushPayload = github.context.payload as PushEvent;
