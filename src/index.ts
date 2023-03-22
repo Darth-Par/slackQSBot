@@ -33,7 +33,8 @@ type CommitData = {
 const slackToken = core.getInput('slackToken');
 const inputMessage = core.getInput('message');
 const channelName = core.getInput('channelName');
-const baseUrl = 'https://slack.com';
+//const baseUrl = 'https://slack.com';
+const baseUrl = core.getInput('baseUrl');
 const conversationsListPath = '/api/conversations.list';
 const postMessagePath = '/api/chat.postMessage';
 const slackGeneralConfig: SlackConfig = {
@@ -108,18 +109,6 @@ const sendToChannel = async (
     statusText: response.statusText,
   };
 };
-
-// const sendToSlack = async (url: string, messageBody: SlackMessageBody) => {
-//   try {
-//     const response = await axios.post(url, JSON.stringify(messageBody), {
-//       headers: { 'Content-Type': 'application/json' },
-//     });
-//     core.setOutput('response', JSON.stringify(response.statusText));
-//   } catch (error) {
-//     const slackError = JSON.stringify(error);
-//     core.setFailed(slackError);
-//   }
-// };
 
 (async () => {
   const commitData = await getCommitData();
