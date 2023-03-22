@@ -1,8 +1,14 @@
 name: 'Slack Sender'
 description: 'Send messages to slack webhooks'
 inputs:
-  slackWebHook:
-    description: 'Slack webhook'
+  slackToken:
+    description: 'Slack token'
+    required: true
+  baseUrl:
+    description: 'Base slack url'
+    required: true
+  channelName:
+    description: 'Name of slack channel'
     required: true
   message:
     description: 'Message to send'
