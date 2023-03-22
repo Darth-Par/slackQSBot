@@ -33,10 +33,9 @@ type CommitData = {
 const slackToken = core.getInput('slackToken');
 const inputMessage = core.getInput('message');
 const channelName = core.getInput('channelName');
-//const baseUrl = 'https://slack.com';
 const baseUrl = core.getInput('baseUrl');
-const conversationsListPath = '/api/conversations.list';
-const postMessagePath = '/api/chat.postMessage';
+const conversationsListPath = core.getInput('conversationsListPath');
+const postMessagePath = core.getInput('postMessagePath');
 const slackGeneralConfig: SlackConfig = {
   headers: {
     'Content-Type': 'application/json; charset=utf-8',
@@ -127,7 +126,7 @@ const sendToChannel = async (
       messageBody,
       slackGeneralConfig,
     );
-    core.setOutput('response', JSON.stringify(sendToChannelResponse));
+    console.log('response', JSON.stringify(sendToChannelResponse));
   } else {
     core.setFailed('Unable to get github data');
   }

@@ -7,6 +7,12 @@ inputs:
   baseUrl:
     description: 'Base slack url'
     required: true
+  conversationsListPath:
+    description: 'Url path to use for conversations.list api'
+    required: true
+  postMessagePath:
+    description: 'Url path to use for chat.postMessage api'
+    required: true
   channelName:
     description: 'Name of slack channel'
     required: true
