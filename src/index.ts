@@ -30,6 +30,8 @@ type CommitData = {
   url: string;
 };
 
+const ghEventName = github.context.eventName;
+const ghPayload = github.context.payload as PushEvent;
 const slackToken = core.getInput('slackToken');
 const inputMessage = core.getInput('message');
 const channelName = core.getInput('channelName');
@@ -42,16 +44,18 @@ const slackGeneralConfig: SlackConfig = {
     Authorization: `Bearer ${slackToken}`,
   },
 };
-console.log(baseUrl);
-const getCommitData = async (): Promise<CommitData | undefined> => {
-  if (github.context.eventName == 'push') {
-    const pushPayload = github.context.payload as PushEvent;
-    const repositoryName = pushPayload.repository.name;
-    if (pushPayload.head_commit) {
+
+const getCommitData = async (
+  eventName: string,
+  payload: PushEvent,
+): Promise<CommitData | undefined> => {
+  if (eventName == 'push') {
+    const repositoryName = payload.repository.name;
+    if (payload.head_commit) {
       return {
         name: repositoryName,
-        id: pushPayload.head_commit.id,
-        url: pushPayload.head_commit.url,
+        id: payload.head_commit.id,
+        url: payload.head_commit.url,
       };
     }
   }
@@ -73,7 +77,7 @@ const getChannels = async (
 const getChannel = async (
   slackChannels: Channel[],
   slackChannelName: string,
-) => {
+): Promise<Channel> => {
   const generalRoom = slackChannels.filter(
     (channel) => channel.name === slackChannelName,
   );
@@ -110,7 +114,7 @@ const sendToChannel = async (
 };
 
 (async () => {
-  const commitData = await getCommitData();
+  const commitData = await getCommitData(ghEventName, ghPayload);
   if (commitData) {
     const messageBody = `RepositoryName: ${commitData.name}\nStatus: ${inputMessage}\nCommitId: ${commitData.id}\nCommitUrl: ${commitData.url}`;
     const getChannelsResponse = await getChannels(
@@ -131,3 +135,5 @@ const sendToChannel = async (
     core.setFailed('Unable to get github data');
   }
 })();
+
+export { getCommitData };
