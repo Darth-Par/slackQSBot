@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosStatic } from 'axios';
 import * as core from '@actions/core';
 import * as github from '@actions/github';
 import { PushEvent } from '@octokit/webhooks-definitions/schema';
@@ -65,8 +65,9 @@ const getCommitData = async (
 const getChannels = async (
   url: string,
   config: SlackConfig,
+  httpClient: AxiosStatic,
 ): Promise<GetChannelsResponse> => {
-  const response = await axios.get(url, config);
+  const response = await httpClient.get(url, config);
   return {
     status: response.status,
     statusText: response.statusText,
@@ -120,6 +121,7 @@ const sendToChannel = async (
     const getChannelsResponse = await getChannels(
       `${baseUrl}${conversationsListPath}`,
       slackGeneralConfig,
+      axios,
     );
     const generalRoom = await getChannel(
       getChannelsResponse.data.channels,
@@ -136,4 +138,4 @@ const sendToChannel = async (
   }
 })();
 
-export { getCommitData };
+export { GetChannelsResponse, getChannels, getCommitData };
