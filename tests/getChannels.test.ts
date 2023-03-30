@@ -1,10 +1,10 @@
-import { AxiosRequestConfig, AxiosResponse, AxiosStatic } from 'axios';
+import { AxiosRequestConfig } from 'axios';
 import { describe, expect, test } from '@jest/globals';
 
-import { Channel, GetChannelsResponse, getChannels } from '../src';
+import { Channel, GetChannelsResponse, getChannels, SlackConfig } from '../src';
 
 interface IHttpClient {
-  get(url: string, config: AxiosRequestConfig): Promise<GetChannelsResponse>;
+  get(url: string, config: SlackConfig): Promise<GetChannelsResponse>;
 }
 
 class HttpTestClient implements IHttpClient {
@@ -27,10 +27,7 @@ class HttpTestClient implements IHttpClient {
     this.data = response.data;
   }
 
-  async get(
-    url: string,
-    config: AxiosRequestConfig,
-  ): Promise<GetChannelsResponse> {
+  async get(url: string, config: SlackConfig): Promise<GetChannelsResponse> {
     this.url = url;
     this.config = config;
 

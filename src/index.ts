@@ -138,4 +138,10 @@ const sendToChannel = async (
   }
 })();
 
-export { GetChannelsResponse, getChannels, getCommitData };
+export {
+  Channel,
+  GetChannelsResponse,
+  getChannels,
+  getCommitData,
+  SlackConfig,
+};
