@@ -1,8 +1,9 @@
-import axios, { AxiosStatic } from 'axios';
+import axios from 'axios';
 import * as core from '@actions/core';
 import * as github from '@actions/github';
 import { PushEvent } from '@octokit/webhooks-definitions/schema';
 
+import { HttpClient, IHttpClient } from './httpClient/httpClient';
 type SlackConfig = {
   headers: {
     'Content-Type': string;
@@ -62,10 +63,23 @@ const getCommitData = async (
   return undefined;
 };
 
+// const getChannels = async (
+//   url: string,
+//   config: SlackConfig,
+//   httpClient: AxiosStatic,
+// ): Promise<GetChannelsResponse> => {
+//   const response = await httpClient.get(url, config);
+//   return {
+//     status: response.status,
+//     statusText: response.statusText,
+//     data: response.data,
+//   };
+// };
+
 const getChannels = async (
   url: string,
   config: SlackConfig,
-  httpClient: AxiosStatic,
+  httpClient: IHttpClient,
 ): Promise<GetChannelsResponse> => {
   const response = await httpClient.get(url, config);
   return {
@@ -118,10 +132,11 @@ const sendToChannel = async (
   const commitData = await getCommitData(ghEventName, ghPayload);
   if (commitData) {
     const messageBody = `RepositoryName: ${commitData.name}\nStatus: ${inputMessage}\nCommitId: ${commitData.id}\nCommitUrl: ${commitData.url}`;
+    const httpClient = new HttpClient();
     const getChannelsResponse = await getChannels(
       `${baseUrl}${conversationsListPath}`,
       slackGeneralConfig,
-      axios,
+      httpClient,
     );
     const generalRoom = await getChannel(
       getChannelsResponse.data.channels,
