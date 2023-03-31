@@ -1,6 +1,10 @@
 import axios, { AxiosRequestConfig } from 'axios';
 
-import { Channel, SlackConfig, GetChannelsResponse } from '..';
+import {
+  Channel,
+  SlackConfig,
+  GetChannelsResponse,
+} from '../customTypes/customTypes';
 
 interface IHttpClient {
   get(url: string, config: SlackConfig): Promise<GetChannelsResponse>;

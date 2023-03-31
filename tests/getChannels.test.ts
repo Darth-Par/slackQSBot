@@ -1,40 +1,42 @@
-// import { AxiosRequestConfig } from 'axios';
-// import { describe, expect, test } from '@jest/globals';
+import { describe, expect, test } from '@jest/globals';
 
-// import { Channel, GetChannelsResponse, getChannels, SlackConfig } from '../src';
+import { getChannels } from '../src';
+import { HttpTestClient } from '../src/httpClient/httpClient';
 
-// interface IHttpClient {
-//   get(url: string, config: SlackConfig): Promise<GetChannelsResponse>;
-// }
+describe('getChannels test suite', () => {
+  const slackTestConfig = {
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer someFakeToken',
+    },
+  };
 
-// class HttpTestClient implements IHttpClient {
-//   status: number;
+  test('expect success return', async () => {
+    const httpTestClient = new HttpTestClient();
+    const testResponse = {
+      status: 200,
+      statusText: 'success',
+      data: {
+        ok: true,
+        channels: [
+          {
+            id: 'generalChannel0002',
+            name: 'general',
+          },
+        ],
+      },
+    };
 
-//   statusText: string;
+    httpTestClient.setResponse(testResponse);
 
-//   data: {
-//     ok: boolean;
-//     channels: Channel[];
-//   };
+    const getChannelsResponse = await getChannels(
+      'https://fake.com/',
+      slackTestConfig,
+      httpTestClient,
+    );
+    // const channelName = testResponse.data.channels[0].name;
 
-//   url: string;
-
-//   config: AxiosRequestConfig;
-
-//   setResponse(response: GetChannelsResponse) {
-//     this.status = response.status;
-//     this.statusText = response.statusText;
-//     this.data = response.data;
-//   }
-
-//   async get(url: string, config: SlackConfig): Promise<GetChannelsResponse> {
-//     this.url = url;
-//     this.config = config;
-
-//     return {
-//       status: this.status,
-//       statusText: this.statusText,
-//       data: this.data,
-//     };
-//   }
-// }
+    expect(getChannelsResponse.status).toEqual(200);
+    // expect(getChannelsResponse.data.channels[0].name).toEqual(channelName);
+  });
+});

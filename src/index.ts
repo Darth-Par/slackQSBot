@@ -4,32 +4,12 @@ import * as github from '@actions/github';
 import { PushEvent } from '@octokit/webhooks-definitions/schema';
 
 import { HttpClient, IHttpClient } from './httpClient/httpClient';
-type SlackConfig = {
-  headers: {
-    'Content-Type': string;
-    Authorization: string;
-  };
-};
-
-type Channel = {
-  id: string;
-  name: string;
-};
-
-type GetChannelsResponse = {
-  status: number;
-  statusText: string;
-  data: {
-    ok: boolean;
-    channels: Channel[];
-  };
-};
-
-type CommitData = {
-  name: string;
-  id: string;
-  url: string;
-};
+import {
+  Channel,
+  CommitData,
+  GetChannelsResponse,
+  SlackConfig,
+} from './customTypes/customTypes';
 
 const ghEventName = github.context.eventName;
 const ghPayload = github.context.payload as PushEvent;
@@ -46,6 +26,8 @@ const slackGeneralConfig: SlackConfig = {
   },
 };
 
+// TODO: Move these functions out before continuing so that only
+// the iiaf is left
 const getCommitData = async (
   eventName: string,
   payload: PushEvent,
@@ -62,19 +44,6 @@ const getCommitData = async (
   }
   return undefined;
 };
-
-// const getChannels = async (
-//   url: string,
-//   config: SlackConfig,
-//   httpClient: AxiosStatic,
-// ): Promise<GetChannelsResponse> => {
-//   const response = await httpClient.get(url, config);
-//   return {
-//     status: response.status,
-//     statusText: response.statusText,
-//     data: response.data,
-//   };
-// };
 
 const getChannels = async (
   url: string,
@@ -153,10 +122,4 @@ const sendToChannel = async (
   }
 })();
 
-export {
-  Channel,
-  GetChannelsResponse,
-  getChannels,
-  getCommitData,
-  SlackConfig,
-};
+export { getChannels, getCommitData };
