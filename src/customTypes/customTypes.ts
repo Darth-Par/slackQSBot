@@ -10,14 +10,18 @@ type Channel = {
   name: string;
 };
 
+type ResponseData = {
+  ok: boolean;
+  channels: Channel[];
+};
+
 type GetChannelsResponse = {
   status: number;
   statusText: string;
-  data: {
-    ok: boolean;
-    channels: Channel[];
-  };
+  data: ResponseData;
 };
+
+type SlackPostResponse = Omit<GetChannelsResponse, 'data'>;
 
 type CommitData = {
   name: string;
@@ -25,4 +29,11 @@ type CommitData = {
   url: string;
 };
 
-export { Channel, CommitData, GetChannelsResponse, SlackConfig };
+export {
+  Channel,
+  CommitData,
+  GetChannelsResponse,
+  ResponseData,
+  SlackConfig,
+  SlackPostResponse,
+};

@@ -8,7 +8,7 @@
     "vBuild": "ncc build ./src/index.ts",
     "tsBuild": "tsc",
     "tsWatch": "tsc -w",
-    "test": "jest"
+    "test": "jest --collectCoverage"
   },
   "repository": {
     "type": "git",

@@ -27,7 +27,7 @@ describe('getChannels test suite', () => {
       },
     };
 
-    httpTestClient.setResponse(testResponse);
+    httpTestClient.setGetChannelsResponse(testResponse);
 
     const getChannelsResponse = await getChannels(
       'https://fake.com/',
@@ -37,6 +37,6 @@ describe('getChannels test suite', () => {
     const channelName = testResponse.data.channels[0].name;
 
     expect(getChannelsResponse.status).toEqual(200);
-    expect(getChannelsResponse.data.channels[0].name).toEqual(channelName);
+    expect(getChannelsResponse.data?.channels[0].name).toEqual(channelName);
   });
 });

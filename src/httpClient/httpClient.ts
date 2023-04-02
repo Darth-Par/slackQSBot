@@ -1,13 +1,19 @@
 import axios, { AxiosRequestConfig } from 'axios';
 
 import {
-  Channel,
-  SlackConfig,
   GetChannelsResponse,
+  ResponseData,
+  SlackConfig,
+  SlackPostResponse,
 } from '../customTypes/customTypes';
 
 interface IHttpClient {
   get(url: string, config: SlackConfig): Promise<GetChannelsResponse>;
+  post(
+    url: string,
+    message: string,
+    config: SlackConfig,
+  ): Promise<SlackPostResponse>;
 }
 
 class HttpTestClient implements IHttpClient {
@@ -15,19 +21,23 @@ class HttpTestClient implements IHttpClient {
 
   statusText: string;
 
-  data: {
-    ok: boolean;
-    channels: Channel[];
-  };
+  data: ResponseData;
 
   url: string;
 
   config: AxiosRequestConfig;
 
-  setResponse(response: GetChannelsResponse) {
+  message: string;
+
+  setGetChannelsResponse(response: GetChannelsResponse) {
     this.status = response.status;
     this.statusText = response.statusText;
     this.data = response.data;
+  }
+
+  setSlackPostResponse(response: SlackPostResponse) {
+    this.status = response.status;
+    this.statusText = response.statusText;
   }
 
   async get(url: string, config: SlackConfig): Promise<GetChannelsResponse> {
@@ -40,11 +50,40 @@ class HttpTestClient implements IHttpClient {
       data: this.data,
     };
   }
+
+  async post(
+    url: string,
+    message: string,
+    config: SlackConfig,
+  ): Promise<SlackPostResponse> {
+    this.url = url;
+    this.message = message;
+    this.config = config;
+
+    return {
+      status: this.status,
+      statusText: this.statusText,
+    };
+  }
 }
 
+// TODO: Add error handling
 class HttpClient implements IHttpClient {
   async get<GetChannelsResponse>(url: string, config: SlackConfig) {
     const response = (await axios.get(url, config)) as GetChannelsResponse;
+    return response;
+  }
+
+  async post<SlackPostResponse>(
+    url: string,
+    message: string,
+    config: SlackConfig,
+  ) {
+    const response = (await axios.post(
+      url,
+      message,
+      config,
+    )) as SlackPostResponse;
     return response;
   }
 }
