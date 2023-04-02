@@ -1,7 +1,7 @@
 import { describe, expect, test } from '@jest/globals';
 import { PushEvent } from '@octokit/webhooks-definitions/schema';
 
-import { getCommitData } from '../src';
+import { getCommitData } from '../src/github/commitData';
 
 describe('getCommitData test suite', () => {
   test('expect standard success return', async () => {

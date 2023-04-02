@@ -1,6 +1,6 @@
 import { describe, expect, test } from '@jest/globals';
 
-import { getChannels } from '../src';
+import { getChannels } from '../src/slack/channels';
 import { HttpTestClient } from '../src/httpClient/httpClient';
 
 describe('getChannels test suite', () => {
@@ -34,9 +34,9 @@ describe('getChannels test suite', () => {
       slackTestConfig,
       httpTestClient,
     );
-    // const channelName = testResponse.data.channels[0].name;
+    const channelName = testResponse.data.channels[0].name;
 
     expect(getChannelsResponse.status).toEqual(200);
-    // expect(getChannelsResponse.data.channels[0].name).toEqual(channelName);
+    expect(getChannelsResponse.data.channels[0].name).toEqual(channelName);
   });
 });
