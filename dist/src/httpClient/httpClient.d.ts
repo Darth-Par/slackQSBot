@@ -17,7 +17,7 @@ declare class HttpTestClient implements IHttpClient {
     post(url: string, message: string, config: SlackConfig): Promise<SlackPostResponse>;
 }
 declare class HttpClient implements IHttpClient {
-    get<GetChannelsResponse>(url: string, config: SlackConfig): Promise<GetChannelsResponse>;
-    post<SlackPostResponse>(url: string, message: string, config: SlackConfig): Promise<SlackPostResponse>;
+    get(url: string, config: SlackConfig): Promise<GetChannelsResponse>;
+    post(url: string, message: string, config: SlackConfig): Promise<SlackPostResponse>;
 }
 export { HttpClient, HttpTestClient, IHttpClient };
