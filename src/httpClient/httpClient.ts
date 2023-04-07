@@ -69,25 +69,12 @@ class HttpTestClient implements IHttpClient {
 
 // TODO: Add error handling
 class HttpClient implements IHttpClient {
-  async get(url: string, config: SlackConfig): Promise<GetChannelsResponse> {
-    const response = await axios.get(url, config);
-    return {
-      status: response.status,
-      statusText: response.statusText,
-      data: response.data,
-    };
+  async get(url: string, config: SlackConfig) {
+    return axios.get<unknown, GetChannelsResponse>(url, config);
   }
 
-  async post(
-    url: string,
-    message: string,
-    config: SlackConfig,
-  ): Promise<SlackPostResponse> {
-    const response = await axios.post(url, message, config);
-    return {
-      status: response.status,
-      statusText: response.statusText,
-    };
+  async post(url: string, message: string, config: SlackConfig) {
+    return axios.post<unknown, SlackPostResponse>(url, message, config);
   }
 }
 
