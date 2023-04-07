@@ -23,29 +23,37 @@ const slackGeneralConfig: SlackConfig = {
 };
 
 (async () => {
-  const commitData = await getCommitData(ghEventName, ghPayload);
-  if (commitData) {
-    const messageBody = `RepositoryName: ${commitData.name}\nStatus: ${inputMessage}\nCommitId: ${commitData.id}\nCommitUrl: ${commitData.url}`;
-    const httpClient = new HttpClient();
-    const getChannelsResponse = await getChannels(
-      `${baseUrl}${conversationsListPath}`,
-      slackGeneralConfig,
-      httpClient,
-    );
-    const generalRoom = await getChannel(
-      getChannelsResponse.data.channels,
-      channelName,
-    );
-    const sendToChannelResponse = await sendToChannel(
-      generalRoom.id,
-      messageBody,
-      slackGeneralConfig,
-      baseUrl,
-      postMessagePath,
-      httpClient,
-    );
-    console.log('response', JSON.stringify(sendToChannelResponse));
-  } else {
-    core.setFailed('Unable to get github data');
+  try {
+    const commitData = await getCommitData(ghEventName, ghPayload);
+    if (commitData) {
+      const messageBody = `RepositoryName: ${commitData.name}\nStatus: ${inputMessage}\nCommitId: ${commitData.id}\nCommitUrl: ${commitData.url}`;
+      const httpClient = new HttpClient();
+      const getChannelsResponse = await getChannels(
+        `${baseUrl}${conversationsListPath}`,
+        slackGeneralConfig,
+        httpClient,
+      );
+      const generalRoom = await getChannel(
+        getChannelsResponse.data.channels,
+        channelName,
+      );
+      const sendToChannelResponse = await sendToChannel(
+        generalRoom.id,
+        messageBody,
+        slackGeneralConfig,
+        baseUrl,
+        postMessagePath,
+        httpClient,
+      );
+      console.log('response', JSON.stringify(sendToChannelResponse));
+    } else {
+      core.setFailed('Unable to get github data');
+    }
+  } catch (error) {
+    console.error(error);
+
+    if (error instanceof Error) {
+      core.setFailed(error);
+    }
   }
 })();
