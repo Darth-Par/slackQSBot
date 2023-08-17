@@ -51,7 +51,6 @@ const slackGeneralConfig: SlackConfig = {
     }
   } catch (error) {
     console.error(error);
-
     if (error instanceof Error) {
       core.setFailed(error);
     }
