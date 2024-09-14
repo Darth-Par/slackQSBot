@@ -1,4 +1,4 @@
-name: 'Slack Sender'
+name: 'qsbot-slack-messenger'
 description: 'Send messages to slack webhooks'
 inputs:
   slackToken:
