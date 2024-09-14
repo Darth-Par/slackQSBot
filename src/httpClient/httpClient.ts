@@ -67,7 +67,6 @@ class HttpTestClient implements IHttpClient {
   }
 }
 
-// TODO: Add error handling
 class HttpClient implements IHttpClient {
   async get(url: string, config: SlackConfig) {
     return axios.get<unknown, GetChannelsResponse>(url, config);
