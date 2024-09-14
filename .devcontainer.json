@@ -5,7 +5,9 @@
       "extensions": [
         "editorconfig.editorconfig",
         "dbaeumer.vscode-eslint",
-        "esbenp.prettier-vscode"
+        "esbenp.prettier-vscode",
+        "davidanson.vscode-markdownlint",
+        "bierner.markdown-preview-github-styles"
       ]
     }
   }
