@@ -1,26 +1,53 @@
-name: general-ci-workflow
+name: ci-workflow
 run-name: General Ci Actions
-on: [push]
+
+on:
+  push:
+    branches:
+      - dev
+      - main
+
 jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 22
+        uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: '22.x'
           cache: 'npm'
-      - run: npm ci
-      - run: npx eslint -c .eslintrc.js .
+
+      - name: NPM Install
+        run: npm ci
+
+      - name: Lint
+        id: linting
+        run: npx eslint -c .eslintrc.js .
+
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 22
+        uses: actions/setup-node@v4
         with:
-          node-version: '18.x'
+          node-version: '22.x'
           cache: 'npm'
-      - run: npm install -g typescript
-      - run: npm install -g @vercel/ncc
-      - run: npm ci
-      - run: npm run vBuild
+
+      - name: Install typescript
+        run: npm install -g typescript
+
+      - name: Install NCC
+        run: npm install -g @vercel/ncc
+
+      - name: NPM Install
+        run: npm ci
+
+      - name: Build
+        id: build
+        run: npm run vBuild
