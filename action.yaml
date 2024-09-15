@@ -24,7 +24,7 @@ outputs:
   response:
     description: 'Response from slack'
 runs:
-  using: 'node16'
+  using: 'node22'
   main: 'dist/index.js'
 branding:
   icon: 'code'
