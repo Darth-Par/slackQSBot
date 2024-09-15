@@ -26,23 +26,6 @@ jobs:
       - name: Lint
         id: linting
         run: npx eslint -c .eslintrc.js .
-        continue-on-error: true
-
-      - if: ${{ steps.linting.outcome == 'failure' }}
-        name: Send Status to Slack
-        uses: Darth-Par/slackQSBot@v1.0.33
-        id: slackMessaging
-        with:
-          slackToken: ${{ secrets.SLACK_TOKEN }}
-          baseUrl: ${{ vars.BASE_URL }}
-          conversationsListPath: ${{ vars.CONVERSATIONS_LIST_PATH }}
-          postMessagePath: ${{ vars.POST_MESSAGE_PATH }}
-          channelName: ${{ vars.CHANNEL_NAME }}
-          message: 'Linting Status -> ${{ steps.linting.outcome }}'
-
-      - if: ${{ steps.linting.outcome == 'failure'}}
-        name: Error
-        run: exit 1
 
   build:
     runs-on: ubuntu-latest
@@ -68,40 +51,3 @@ jobs:
       - name: Build
         id: build
         run: npm run vBuild
-        continue-on-error: true
-
-      - if: ${{ steps.build.outcome == 'failure'}}
-        name: Send Status to Slack
-        uses: Darth-Par/slackQSBot@v1.0.33
-        id: slackMessaging
-        with:
-          slackToken: ${{ secrets.SLACK_TOKEN }}
-          baseUrl: ${{ vars.BASE_URL }}
-          conversationsListPath: ${{ vars.CONVERSATIONS_LIST_PATH }}
-          postMessagePath: ${{ vars.POST_MESSAGE_PATH }}
-          channelName: ${{ vars.CHANNEL_NAME }}
-          message: 'Build Status -> ${{ steps.linting.outcome }}'
-
-      - if: ${{ steps.build.outcome == 'failure'}}
-        name: Error
-        run: exit 1
-
-  send_pipeline_state:
-    runs-on: ubuntu-22.04
-    defaults:
-      run:
-        shell: bash
-    needs:
-      - lint
-      - build
-
-    steps:
-      - name: Send Pipeline Status To Slack
-        uses: Darth-Par/slackQSBot@v1.0.33
-        with:
-          slackToken: ${{ secrets.SLACK_TOKEN }}
-          baseUrl: ${{ vars.BASE_URL }}
-          conversationsListPath: ${{ vars.CONVERSATIONS_LIST_PATH }}
-          postMessagePath: ${{ vars.POST_MESSAGE_PATH }}
-          channelName: ${{ vars.CHANNEL_NAME }}
-          message: 'Custom GitHub Action Pipeline Status -> SUCCESS'
